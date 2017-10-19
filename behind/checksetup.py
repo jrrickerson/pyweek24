@@ -1,6 +1,12 @@
+import os
 import sge
 from sge import keyboard
 from sge.gfx import Background, Color, Sprite
+from sge.snd import Music
+
+BASE_DIR = os.path.dirname(__file__)
+FONT_SIZE = 36
+MUSIC = os.path.join(BASE_DIR, 'assets', 'music', 'Venus.wav')
 
 
 class CheckGame(sge.dsp.Game):
@@ -49,7 +55,15 @@ class CheckPlayer(sge.dsp.Object):
 class CheckRoom(sge.dsp.Room):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.font = sge.gfx.Font(size=36)
+        self.font = sge.gfx.Font(size=FONT_SIZE)
+        self.bg_music = Music(fname=MUSIC, volume=0.5)
+
+
+    def event_room_start(self):
+        self.bg_music.play(loops=None)
+
+    def event_room_stop(self):
+        self.bg_music.stop()
 
     def event_step(self, time_passed, delta_mult):
         sge.game.project_text(
