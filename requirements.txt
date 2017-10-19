@@ -1,0 +1,4 @@
+pygame==1.9.3
+sge-pygame==1.5
+six==1.11.0
+uniseg==0.7.1
