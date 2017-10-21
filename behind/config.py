@@ -38,6 +38,16 @@ PLAYER_SPRITES = {
     },
 }
 
+# Map player actions to keys
+# Provide alternate keys to the same action by adding to the tuple
+PLAYER_CONTROLS = {
+    'left': ('left', 'a'),
+    'right': ('right', 'd'),
+    'jump': ('ctrl', 'space'),
+    'action': ('enter', 'f'),
+}
+
+PLAYER_MOVE_SPEED = 200
 
 # Level Configuration
 LEVELS = [
