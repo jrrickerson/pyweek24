@@ -57,6 +57,20 @@ PLAYER_MOVE_SPEED = 200
 # pixel/s^2
 GRAVITY = 1
 
+# Background Configuration
+
+# Set of sprites for the different scrolling backgrounds
+BACKGROUND_SPRITES = {
+    'front': {
+        'name': 'front_scroll',
+        'directory': SPRITE_DIRECTORY,
+    },
+    'behind': {
+        'name': 'behind_scroll',
+        'directory': SPRITE_DIRECTORY,
+    },
+}
+
 # Level Configuration
 LEVELS = [
 ]
