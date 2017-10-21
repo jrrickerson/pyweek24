@@ -103,3 +103,10 @@ ENV/
 # vim
 *.swp
 *.swo
+
+# MacOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
