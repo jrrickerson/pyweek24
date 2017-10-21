@@ -17,6 +17,7 @@ def empty_sprite():
 
 
 class Player(sge.dsp.Object):
+    # These are mostly used for choosing the animation.
     STATES = (
         'idle',
         'walking',
@@ -25,6 +26,8 @@ class Player(sge.dsp.Object):
         'killed',
         'dead',
     )
+    # This needs to be the same as the sprite height.
+    HEIGHT = 64
 
     def __init__(self, image_dict, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -64,8 +67,8 @@ class Player(sge.dsp.Object):
         assert new_state in self.STATES
         if self._state != new_state:
             print('Player state changed to {}'.format(new_state))
-        self._state = new_state
-        self.event_state_changed(new_state)
+            self._state = new_state
+            self.event_state_changed(new_state)
 
     def event_state_changed(self, new_state):
         if self.direction == -1:
@@ -87,36 +90,40 @@ class Player(sge.dsp.Object):
         return any([sge.keyboard.get_pressed(k) for k in
                    self.controls.get(control_name, tuple())])
 
-    def move(self, time_passed):
-        moved = (time_passed / 1000) * self.move_speed
-        x_dir = 0
-        y_dir = 0
+    def event_step(self, time_passed, delta_multi):
         room_right_wall = sge.game.current_room.width
         room_left_wall = 0
         # Scroll with player movement.  Keep the player in center of the
         # screen, except at the start and end of the level
+        self.xvelocity = 0
         if self._control_pressed('right'):
-            x_dir += 1.0
-            self.direction = 1
-        elif self._control_pressed('left'):
-            x_dir += -1.0
+            self.xvelocity += 1
+        if self._control_pressed('left'):
+            self.xvelocity -= 1
+        self.xvelocity *= self.move_speed * time_passed / 1000
+
+        if self.xvelocity < 0:
             self.direction = -1
+        elif self.xvelocity > 0:
+            self.direction = 1
 
+        # The following code could be generalized as collision detection.
         # Limit to the confines of the current room
-        if self.image_left <= room_left_wall and x_dir < 0:
-            x_dir = 0
-        if self.image_right >= room_right_wall and x_dir > 0:
-            x_dir = 0
+        if self.image_left <= room_left_wall and self.xvelocity < 0:
+            self.xvelocity = 0
+        if self.image_right >= room_right_wall and self.xvelocity > 0:
+            self.xvelocity = 0
 
-        # Started walking this frame
-        if self.state == 'idle' and x_dir:
-            self.state = 'walking'
-        if self.state == 'walking' and not x_dir:
-            self.state = 'idle'
+        if self.image_bottom < sge.game.current_room.floor:
+            self.yacceleration = config.GRAVITY
+            self.state = 'jumping'
+        else:
+            self.image_bottom = sge.game.current_room.floor
+            self.yacceleration = 0
+            # Started walking this frame
+            self.state = 'walking' if self.xvelocity else 'idle'
 
-        self.move_x(x_dir * moved)
-        self.move_y(y_dir * moved)
-        #print(self.image_index, self.image_speed, self.sprite.frames, self.sprite.fps)
-
-    def event_step(self, time_passed, delta_multi):
-        self.move(time_passed)
+    def event_key_press(self, key, _):
+        if (self.image_bottom >= sge.game.current_room.floor
+            and key in self.controls['jump']):
+            self.yvelocity = -30

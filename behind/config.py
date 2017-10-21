@@ -48,11 +48,14 @@ PLAYER_SPRITES = {
 PLAYER_CONTROLS = {
     'left': ('left', 'a'),
     'right': ('right', 'd'),
-    'jump': ('ctrl', 'space'),
+    'jump': ('ctrl_left', 'ctrl_right', 'space'),
     'action': ('enter', 'f'),
 }
 
+# pixel/s
 PLAYER_MOVE_SPEED = 200
+# pixel/s^2
+GRAVITY = 1
 
 # Level Configuration
 LEVELS = [

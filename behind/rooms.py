@@ -6,6 +6,10 @@ from . import config
 
 
 class ScrollableLevel(sge.dsp.Room):
+    # This is currently just a number, but it could be expanded to some kind of
+    # platform object.
+    floor = config.GAME_WINDOW_HEIGHT * 8 // 10
+
     def __init__(self, *args, player=None, ruler=False, **kwargs):
         self.scroll_speed = config.PLAYER_MOVE_SPEED
         self.controls = config.PLAYER_CONTROLS
