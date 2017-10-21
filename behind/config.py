@@ -52,7 +52,10 @@ PLAYER_CONTROLS = {
     'action': ('enter', 'f'),
 }
 
+# pixel/s
 PLAYER_MOVE_SPEED = 200
+# pixel/s^2
+GRAVITY = 100
 
 # Level Configuration
 LEVELS = [

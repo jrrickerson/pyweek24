@@ -17,6 +17,7 @@ def empty_sprite():
 
 
 class Player(sge.dsp.Object):
+    # These are mostly used for choosing the animation.
     STATES = (
         'idle',
         'walking',
@@ -90,6 +91,7 @@ class Player(sge.dsp.Object):
                    self.controls.get(control_name, tuple())])
 
     def move(self, time_passed):
+        """time_passed is in milliseconds."""
         moved = (time_passed / 1000) * self.move_speed
         x_dir = 0
         y_dir = 0
@@ -126,4 +128,4 @@ class Player(sge.dsp.Object):
     def event_key_press(self, key, _):
         if (self.image_bottom >= sge.game.current_room.floor
             and key in self.controls['jump']):
-            self.state = 'jumping'
+            self.yvelocity = -10
