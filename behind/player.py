@@ -1,7 +1,10 @@
 import sge
 from sge.gfx import Sprite, Color
 
-from . import config
+try:
+    from . import config
+except:
+    import config
 
 NO_SPRITE = None
 

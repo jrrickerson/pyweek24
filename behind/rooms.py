@@ -2,7 +2,10 @@ import math
 import sge
 from sge.gfx import Sprite, Color
 
-from . import config
+try:
+    from . import config
+except:
+    import config
 
 
 class ScrollableLevel(sge.dsp.Room):
