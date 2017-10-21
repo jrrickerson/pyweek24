@@ -25,6 +25,8 @@ class Player(sge.dsp.Object):
         'killed',
         'dead',
     )
+    # This needs to be the same as the sprite height.
+    HEIGHT = 64
 
     def __init__(self, image_dict, *args, **kwargs):
         super().__init__(*args, **kwargs)
