@@ -107,6 +107,7 @@ class Player(sge.dsp.Object):
         elif self.xvelocity > 0:
             self.direction = 1
 
+
         # The following code could be generalized as collision detection.
         # Limit to the confines of the current room
         if self.image_left <= room_left_wall and self.xvelocity < 0:

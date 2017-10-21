@@ -24,7 +24,7 @@ def initialize(config):
         rooms.ScrollableLevel.floor - player.Player.HEIGHT,
     )
     sge.game.start_room = rooms.ScrollableLevel(
-        player=player_obj, width=10000, background=bg_obj, ruler=True)
+        player=player_obj, width=10000, background=bg_obj, ruler=False)
     sge.game.mouse_visible = False
 
 def run():

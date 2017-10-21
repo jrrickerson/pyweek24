@@ -52,6 +52,19 @@ class ScrollableLevel(sge.dsp.Room):
         self.views[0].x += (x_dir * moved)
         self.views[0].y += (y_dir * moved)
 
+    def switch_sides(self):
+        # if the action key is pressed switch between front and behind
+
+        # this is not done
+        
+        if self._control_pressed('action'):
+            # bg_obj = background.Background('behind')
+            # sge.game.start_room = rooms.ScrollableLevel(
+            #     player=player_obj, width=10000, background=bg_obj, ruler=False)
+            pass
+
+
+
     def event_key_press(self, key, char):
         # Press R to toggle ruler
         # Capture this here so we only capture a single event,
@@ -61,6 +74,7 @@ class ScrollableLevel(sge.dsp.Room):
 
     def event_step(self, time_passed, delta_multi):
         self.scroll_view(time_passed)
+        self.switch_sides()
 
         if self.ruler:
             self.show_ruler()
