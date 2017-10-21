@@ -3,6 +3,8 @@ import os
 
 BASE_DIR = os.path.dirname(__file__)
 
+SPRITE_DIRECTORY = os.path.join(BASE_DIR, 'assets', 'sprites')
+
 # General Game configuration
 GAME_WINDOW_WIDTH = 1280
 GAME_WINDOW_HEIGHT = 720
@@ -14,27 +16,30 @@ GAME_FPS = 60
 # Set of sprites for the Player's different animation states
 PLAYER_SPRITES = {
     'idle': {
-        'name': '',
+        'name': 'player_standing',
+        'directory': SPRITE_DIRECTORY,
     },
-
     'walking': {
-        'name': '',
+        'name': 'player_running',
+        'directory': SPRITE_DIRECTORY,
+        'fps': 12,
     },
-
     'jumping': {
-        'name': '',
+        'name': 'player_jumping',
+        'directory': SPRITE_DIRECTORY,
+        'fps': 12,
     },
-
     'damaged': {
         'name': '',
     },
-
     'killed': {
-        'name': '',
+        'name': 'player_dying',
+        'directory': SPRITE_DIRECTORY,
+        'fps': 12,
     },
-
     'dead': {
-        'name': '',
+        'name': 'player_dead',
+        'directory': SPRITE_DIRECTORY,
     },
 }
 
