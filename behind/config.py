@@ -27,7 +27,7 @@ PLAYER_SPRITES = {
     'jumping': {
         'name': 'player_jumping',
         'directory': SPRITE_DIRECTORY,
-        'fps': 12,
+        'fps': 6,
     },
     'damaged': {
         'name': '',
