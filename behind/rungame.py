@@ -1,9 +1,22 @@
 import sge
 
-from . import config
-from . import game
-from . import player
-from . import rooms
+try:
+    from . import config
+except:
+    import config
+try:
+    from . import game
+except:
+    import game
+try:
+    from . import player
+except:
+    import player
+try:
+    from . import rooms
+except:
+    import rooms
+
 
 
 def initialize(config):
