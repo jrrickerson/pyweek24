@@ -48,7 +48,7 @@ PLAYER_SPRITES = {
 PLAYER_CONTROLS = {
     'left': ('left', 'a'),
     'right': ('right', 'd'),
-    'jump': ('ctrl', 'space'),
+    'jump': ('ctrl_left', 'ctrl_right', 'space'),
     'action': ('enter', 'f'),
 }
 

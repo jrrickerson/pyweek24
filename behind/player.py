@@ -122,3 +122,8 @@ class Player(sge.dsp.Object):
 
     def event_step(self, time_passed, delta_multi):
         self.move(time_passed)
+
+    def event_key_press(self, key, _):
+        if (self.image_bottom >= sge.game.current_room.floor
+            and key in self.controls['jump']):
+            self.state = 'jumping'
