@@ -90,40 +90,35 @@ class Player(sge.dsp.Object):
         return any([sge.keyboard.get_pressed(k) for k in
                    self.controls.get(control_name, tuple())])
 
-    def move(self, time_passed):
-        """time_passed is in milliseconds."""
-        moved = (time_passed / 1000) * self.move_speed
-        x_dir = 0
-        y_dir = 0
+    def event_step(self, time_passed, delta_multi):
         room_right_wall = sge.game.current_room.width
         room_left_wall = 0
         # Scroll with player movement.  Keep the player in center of the
         # screen, except at the start and end of the level
+        self.xvelocity = 0
         if self._control_pressed('right'):
-            x_dir += 1.0
-            self.direction = 1
-        elif self._control_pressed('left'):
-            x_dir += -1.0
-            self.direction = -1
+            self.xvelocity += 1
+        if self._control_pressed('left'):
+            self.xvelocity -= 1
+        self.xvelocity *= self.move_speed * time_passed / 1000
 
+        if self.xvelocity < 0:
+            self.direction = -1
+        elif self.xvelocity > 0:
+            self.direction = 1
+
+        # The following code could be generalized as collision detection.
         # Limit to the confines of the current room
-        if self.image_left <= room_left_wall and x_dir < 0:
-            x_dir = 0
-        if self.image_right >= room_right_wall and x_dir > 0:
-            x_dir = 0
+        if self.image_left <= room_left_wall and self.xvelocity < 0:
+            self.xvelocity = 0
+        if self.image_right >= room_right_wall and self.xvelocity > 0:
+            self.xvelocity = 0
 
         # Started walking this frame
-        if self.state == 'idle' and x_dir:
+        if self.state == 'idle' and self.xvelocity:
             self.state = 'walking'
-        if self.state == 'walking' and not x_dir:
+        if self.state == 'walking' and not self.xvelocity:
             self.state = 'idle'
-
-        self.move_x(x_dir * moved)
-        self.move_y(y_dir * moved)
-        #print(self.image_index, self.image_speed, self.sprite.frames, self.sprite.fps)
-
-    def event_step(self, time_passed, delta_multi):
-        self.move(time_passed)
 
     def event_key_press(self, key, _):
         if (self.image_bottom >= sge.game.current_room.floor
