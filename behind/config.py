@@ -55,7 +55,7 @@ PLAYER_CONTROLS = {
 # pixel/s
 PLAYER_MOVE_SPEED = 200
 # pixel/s^2
-GRAVITY = 100
+GRAVITY = 1
 
 # Level Configuration
 LEVELS = [

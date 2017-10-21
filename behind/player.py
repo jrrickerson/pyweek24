@@ -67,8 +67,8 @@ class Player(sge.dsp.Object):
         assert new_state in self.STATES
         if self._state != new_state:
             print('Player state changed to {}'.format(new_state))
-        self._state = new_state
-        self.event_state_changed(new_state)
+            self._state = new_state
+            self.event_state_changed(new_state)
 
     def event_state_changed(self, new_state):
         if self.direction == -1:
@@ -114,13 +114,16 @@ class Player(sge.dsp.Object):
         if self.image_right >= room_right_wall and self.xvelocity > 0:
             self.xvelocity = 0
 
-        # Started walking this frame
-        if self.state == 'idle' and self.xvelocity:
-            self.state = 'walking'
-        if self.state == 'walking' and not self.xvelocity:
-            self.state = 'idle'
+        if self.image_bottom < sge.game.current_room.floor:
+            self.yacceleration = config.GRAVITY
+            self.state = 'jumping'
+        else:
+            self.image_bottom = sge.game.current_room.floor
+            self.yacceleration = 0
+            # Started walking this frame
+            self.state = 'walking' if self.xvelocity else 'idle'
 
     def event_key_press(self, key, _):
         if (self.image_bottom >= sge.game.current_room.floor
             and key in self.controls['jump']):
-            self.yvelocity = -10
+            self.yvelocity = -30
