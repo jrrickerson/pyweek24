@@ -1,11 +1,16 @@
 import sge
 from sge.gfx import Sprite, Color
 
+from . import config
+
 
 class ScrollableLevel(sge.dsp.Room):
     def __init__(self, *args, player=None, ruler=False, **kwargs):
+        self.scroll_speed = config.PLAYER_MOVE_SPEED
+        self.controls = config.PLAYER_CONTROLS
+
         self.player = player
-        self.MOVE_PER_SEC = 200
+
         super().__init__(*args, **kwargs)
         self.add(player)
 
@@ -26,24 +31,24 @@ class ScrollableLevel(sge.dsp.Room):
             self.ruler.append(mark)
             self.add(mark)
 
+    def _control_pressed(self, control_name):
+        """Return True if any of the keys mapped to the control_name is
+        being pressed"""
+        return any([sge.keyboard.get_pressed(k) for k in
+                   self.controls.get(control_name, tuple())])
+
     def scroll_view(self, time_passed):
-        moved = (time_passed / 1000) * self.MOVE_PER_SEC
-        pressed = sge.keyboard.get_pressed
+        moved = (time_passed / 1000) * self.scroll_speed
+        view = self.views[0]
+        view_center = view.x + view.width / 2
 
         y_dir = 0
-        #if pressed('up') or pressed('w'):
-        #    y_dir = -1.0
-        #if pressed('down') or pressed('s'):
-        #    y_dir = 1.0
-
         x_dir = 0
-        if pressed('right') or pressed('d'):
+        if self._control_pressed('right') and self.player.x >= view_center:
             x_dir += 1.0
-        if pressed('left') or pressed('a'):
+        if self._control_pressed('left') and self.player.x <= view_center:
             x_dir += -1.0
 
-        self.player.x += (x_dir * moved)
-        self.player.y += (y_dir * moved)
         self.views[0].x += (x_dir * moved)
         self.views[0].y += (y_dir * moved)
 

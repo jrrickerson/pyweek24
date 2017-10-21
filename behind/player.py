@@ -1,6 +1,8 @@
 import sge
 from sge.gfx import Sprite, Color
 
+from . import config
+
 NO_SPRITE = None
 
 
@@ -26,6 +28,8 @@ class Player(sge.dsp.Object):
 
     def __init__(self, image_dict, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.move_speed = config.PLAYER_MOVE_SPEED
+        self.controls = config.PLAYER_CONTROLS
         self.empty_sprite = empty_sprite()
         self.load_sprites(image_dict)
         self.state = 'idle'
@@ -52,3 +56,34 @@ class Player(sge.dsp.Object):
         print('Player state changed to {}'.format(self.state))
         self.sprite = self.sprite_dict.get(
             self.state, self.empty_sprite)
+
+    def _control_pressed(self, control_name):
+        """Return True if any of the keys mapped to the control_name is
+        being pressed"""
+        return any([sge.keyboard.get_pressed(k) for k in
+                   self.controls.get(control_name, tuple())])
+
+    def move(self, time_passed):
+        moved = (time_passed / 1000) * self.move_speed
+        x_dir = 0
+        y_dir = 0
+        room_right_wall = sge.game.current_room.width
+        room_left_wall = 0
+        # Scroll with player movement.  Keep the player in center of the
+        # screen, except at the start and end of the level
+        if self._control_pressed('right'):
+            x_dir += 1.0
+        if self._control_pressed('left'):
+            x_dir += -1.0
+
+        # Limit to the confines of the current room
+        if self.image_left <= room_left_wall and x_dir < 0:
+            x_dir = 0
+        if self.image_right >= room_right_wall and x_dir > 0:
+            x_dir = 0
+
+        self.move_x(x_dir * moved)
+        self.move_y(y_dir * moved)
+
+    def event_step(self, time_passed, delta_multi):
+        self.move(time_passed)
