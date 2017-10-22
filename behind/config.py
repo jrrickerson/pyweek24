@@ -54,6 +54,7 @@ PLAYER_CONTROLS = {
 
 # pixel/s
 PLAYER_MOVE_SPEED = 200
+PLAYER_JUMP_VELOCITY = -20
 # pixel/s^2
 GRAVITY = 1
 
@@ -67,6 +68,22 @@ BACKGROUND_SPRITES = {
     },
     'behind': {
         'name': 'behind_scroll',
+        'directory': SPRITE_DIRECTORY,
+    },
+}
+
+# Platform Configuration
+PLATFORM_SPRITES = {
+    'left': {
+        'name': 'platform_left',
+        'directory': SPRITE_DIRECTORY,
+    },
+    'right': {
+        'name': 'platform_right',
+        'directory': SPRITE_DIRECTORY,
+    },
+    'middle': {
+        'name': 'platform_middle',
         'directory': SPRITE_DIRECTORY,
     },
 }
